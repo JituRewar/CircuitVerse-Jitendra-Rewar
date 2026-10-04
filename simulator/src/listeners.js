@@ -484,6 +484,9 @@ export default function startListeners() {
             if (simulationArea.lastSelected && simulationArea.lastSelected.keyDown2) {
                 if (e.key.toString().length == 1) {
                     simulationArea.lastSelected.keyDown2(e.key.toString());
+                    updateSimulationSet(true);
+                    updateCanvasSet(true);
+                    scheduleUpdate(1);
                     return;
                 }
             }
@@ -491,6 +494,8 @@ export default function startListeners() {
             if (simulationArea.lastSelected && simulationArea.lastSelected.keyDown3) {
                 if (e.key.toString() != 'Backspace' && e.key.toString() != 'Delete') {
                     simulationArea.lastSelected.keyDown3(e.key.toString());
+                    updateCanvasSet(true);
+                    scheduleUpdate(1);
                     return;
                 }
             }
