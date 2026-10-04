@@ -462,6 +462,39 @@ export default function startListeners() {
         }
 
         if (listenToSimulator) {
+            // Handle component keyDown FIRST, before any bound checks
+            if (simulationArea.lastSelected && simulationArea.lastSelected.keyDown) {
+                if (e.key.toString().length == 1 || e.key.toString() == 'Backspace' || e.key.toString() == 'Enter') {
+                    simulationArea.lastSelected.keyDown(e.key.toString());
+                    e.cancelBubble = true;
+                    e.returnValue = false;
+
+                    // E.stopPropagation works in Firefox.
+                    if (e.stopPropagation) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                    }
+                    scheduleUpdate(1);
+                    updateCanvasSet(true);
+
+                    return;
+                }
+            }
+
+            if (simulationArea.lastSelected && simulationArea.lastSelected.keyDown2) {
+                if (e.key.toString().length == 1) {
+                    simulationArea.lastSelected.keyDown2(e.key.toString());
+                    return;
+                }
+            }
+
+            if (simulationArea.lastSelected && simulationArea.lastSelected.keyDown3) {
+                if (e.key.toString() != 'Backspace' && e.key.toString() != 'Delete') {
+                    simulationArea.lastSelected.keyDown3(e.key.toString());
+                    return;
+                }
+            }
+
             // If mouse is focusing on input element, then override any action
             // if($(':focus').length){
             //     return;
@@ -515,36 +548,6 @@ export default function startListeners() {
                 //        simulationArea.copyList.push(simulationArea.lastSelected);
                 //    }
                 //    copy(simulationArea.copyList);
-            }
-
-            if (simulationArea.lastSelected && simulationArea.lastSelected.keyDown) {
-                if (e.key.toString().length == 1 || e.key.toString() == 'Backspace' || e.key.toString() == 'Enter') {
-                    simulationArea.lastSelected.keyDown(e.key.toString());
-                    e.cancelBubble = true;
-                    e.returnValue = false;
-
-                    // E.stopPropagation works in Firefox.
-                    if (e.stopPropagation) {
-                        e.stopPropagation();
-                        e.preventDefault();
-                    }
-
-                    return;
-                }
-            }
-
-            if (simulationArea.lastSelected && simulationArea.lastSelected.keyDown2) {
-                if (e.key.toString().length == 1) {
-                    simulationArea.lastSelected.keyDown2(e.key.toString());
-                    return;
-                }
-            }
-
-            if (simulationArea.lastSelected && simulationArea.lastSelected.keyDown3) {
-                if (e.key.toString() != 'Backspace' && e.key.toString() != 'Delete') {
-                    simulationArea.lastSelected.keyDown3(e.key.toString());
-                    return;
-                }
             }
 
             if (e.keyCode == 16) {
